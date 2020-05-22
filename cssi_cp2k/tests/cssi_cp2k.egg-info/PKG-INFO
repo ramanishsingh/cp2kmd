@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: cssi-cp2k
+Version: 0.1
+Summary: A Python input/output interface to CP2K, developed as part of the MoSDeF simulation suite.
+Home-page: https://github.com/colinebunner/CSSI_CP2K
+Author: Colin Bunner
+Author-email: bunne043@umn.edu
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN

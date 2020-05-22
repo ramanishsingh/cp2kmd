@@ -1,0 +1,25 @@
+#quick test that works on my laptop
+from cssi_cp2k.classes import SIM as sim
+
+mySim = sim.SIM()
+
+mySim.GLOBAL.RUN_TYPE = "MD"
+mySim.GLOBAL.PROJECT  = "iodine-liquid"
+mySim.GLOBAL.PRINT_LEVEL = "LOW"
+
+mySim.MOTION.MD.ENSEMBLE = "NVT"
+mySim.MOTION.MD.STEPS  = 1000000
+mySim.MOTION.MD.TIMESTEP = 0.5
+mySim.MOTION.MD.TEMPERATURE = 409.0
+mySim.MOTION.MD.THERMOSTAT.TYPE = "NOSE"
+mySim.MOTION.MD.THERMOSTAT.REGION = "MASSIVE"
+mySim.MOTION.MD.THERMOSTAT.NOSE.LENGTH = 3
+mySim.MOTION.MD.THERMOSTAT.NOSE.YOSHIDA = 3
+mySim.MOTION.MD.THERMOSTAT.NOSE.TIMECON = 1000.0
+mySim.MOTION.MD.THERMOSTAT.NOSE.MTS = 2
+mySim.MOTION.MD.PRINT.ENERGY.EACH.MD = 20
+mySim.MOTION.MD.PRINT.PROGRAM_RUN_INFO.EACH.MD = 20
+mySim.MOTION.GEO_OPT.MAX_ITER= 2
+mySim.write_changeLog(fn="iodine-changeLog.out")
+mySim.write_errorLog()
+mySim.write_inputFile()
