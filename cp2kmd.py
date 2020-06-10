@@ -41,7 +41,10 @@ class Cp2kmd():
         ensemble=self.ensemble
         timestep=self.timestep
         thermostat=self.thermostat
-        
+        temperature=(temperature.to('K')).value
+        box_length=(box_length.to('nm')).value
+        simulation_time=(simulation_time.to('ps')).value
+        timestep=(timestep.to('fs')).value
         novice_functions.optimize_molecule(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
                                            simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat)
         
@@ -67,6 +70,10 @@ class Cp2kmd():
         timestep=self.timestep
         thermostat=self.thermostat
         number_atom_per_molecule=self.number_atom_per_molecule
+        temperature=(temperature.to('K')).value
+        box_length=(box_length.to('nm')).value
+        simulation_time=(simulation_time.to('ps')).value
+        timestep=(timestep.to('fs')).value
         string="tail -{} molecule_opt-pos-1.xyz > opt_coor.xyz".format(number_atom_per_molecule)
         call(string,shell=True)
         table=0*np.empty([1, 3])#dummy array to start with;
@@ -100,6 +107,10 @@ class Cp2kmd():
         ensemble=self.ensemble
         timestep=self.timestep
         thermostat=self.thermostat
+        temperature=(temperature.to('K')).value
+        box_length=(box_length.to('nm')).value
+        simulation_time=(simulation_time.to('ps')).value
+        timestep=(timestep.to('fs')).value
         
         novice_functions.run_md_main(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
                                     simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat)

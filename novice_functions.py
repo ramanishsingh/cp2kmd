@@ -308,7 +308,8 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
             time_step=1
         if lightest>=40:
             time_step=1.5
-    steps= round(simulation_time*1000/time_step)
+    steps= int(simulation_time*1000/timestep)
+    
     mySim = sim.SIM()
 
     mySim.GLOBAL.RUN_TYPE = "MD"
@@ -373,7 +374,7 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
 
     mySim.MOTION.MD.ENSEMBLE = ensemble
     mySim.MOTION.MD.STEPS  = steps
-    mySim.MOTION.MD.TIMESTEP = time_step
+    mySim.MOTION.MD.TIMESTEP = timestep
     mySim.MOTION.MD.TEMPERATURE = temperature
     mySim.MOTION.MD.THERMOSTAT.TYPE = thermostat
     mySim.MOTION.MD.THERMOSTAT.REGION = "MASSIVE"
