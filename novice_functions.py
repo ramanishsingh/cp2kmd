@@ -303,11 +303,11 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
         lightest=min(mass_list);
     
         if lightest <1.5:
-            time_step=0.5
+            timestep=0.5
         elif (lightest>=1.5) and (lightest<40):
-            time_step=1
+            timestep=1
         if lightest>=40:
-            time_step=1.5
+            timestep=1.5
     steps= int(simulation_time*1000/timestep)
     
     mySim = sim.SIM()
