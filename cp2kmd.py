@@ -7,7 +7,8 @@ class Cp2kmd():
                  temperature= None,box_length=None,number_of_molecules=None,simulation_time=None,CUTOFF=None, SCF_tolerence=None,
                  basis_set=[None], ensemble=None, timestep=None, thermostat=None):
         self.molecule=molecule;
-        self.molecule.save('molecule.pdb',overwrite='True')
+        
+        #self.molecule.save('molecule.pdb',overwrite='True')
         self.functional=functional;
         self.dire=dire;
         self.temperature=temperature;
@@ -22,11 +23,13 @@ class Cp2kmd():
         self.timestep=timestep;
         self.thermostat=thermostat;
         
-        molecule=molecule.to_parmed();
-        
-        self.number_atom_per_molecule=len(molecule.atoms)
+        molecule=[i.to_parmed() for i in molecule]
+        self.number_atom_per_molecule=[len(i.atoms) for i in molecule]
     def optimize_files(self):
+        
+        
         molecule=self.molecule;
+        
         functional=self.functional;
         project_name=self.project_name;
         dire=self.dire;
@@ -45,15 +48,23 @@ class Cp2kmd():
         box_length=(box_length.to('nm')).value
         simulation_time=(simulation_time.to('ps')).value
         timestep=(timestep.to('fs')).value
-        novice_functions.optimize_molecule(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
-                                           simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat)
+        names=[i.name for i in molecule]
+        self.opt_inp_file=[str(i)+'_opt.inp' for i in names]
+        self.mol_unopt_coord=[str(i)+'_unopt_coord.xyz' for i in names]
+        
+        opt_inp_file=self.opt_inp_file
+        mol_unopt_coord=self.mol_unopt_coord
+        for i in range(len(names)):
+            
+            novice_functions.optimize_molecule(molecule[i],functional,project_name,dire,temperature,box_length,number_of_molecules,
+                                           simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat,opt_inp_file[i],mol_unopt_coord[i])
+            
         
         
         
     
         
-        self.opt_inp_file='mol_opt.inp'
-        self.mol_unopt_coord='mol_unopt_coord.xyz'
+        
     def run_pre_files(self):
         molecule=self.molecule;
         functional=self.functional;
@@ -74,19 +85,8 @@ class Cp2kmd():
         box_length=(box_length.to('nm')).value
         simulation_time=(simulation_time.to('ps')).value
         timestep=(timestep.to('fs')).value
-        string="tail -{} molecule_opt-pos-1.xyz > opt_coor.xyz".format(number_atom_per_molecule)
-        call(string,shell=True)
-        table=0*np.empty([1, 3])#dummy array to start with;
-        scaling=0*np.empty([1,3])# scaling for nm to A
-        with open('opt_coor.xyz') as input_data:
-            for line in input_data:
-                n, x, y,z = line.strip().split()
-                table=np.concatenate((table, np.array([[float(x),float(y),float(z)]])), axis=0);
-        table=np.delete(table,0,0)
-        table=table*0.1;
-        molecule=mb.load('molecule.pdb');
         novice_functions.run_md_pre(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
-                                    simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat,table)
+                                    simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat)
     def run_main_files(self):
         molecule=self.molecule;
         functional=self.functional;

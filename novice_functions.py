@@ -20,8 +20,8 @@ def info_molecule(molecule):
     for i in range(num_atoms):
         name_atoms.append(molecule.atoms[i].element_name)
         mass_atoms.append(molecule.atoms[i].mass)
-    molecular_mass=sum(mass_atoms)
-    return name_atoms,mass_atoms,molecular_mass
+    
+    return name_atoms,mass_atoms
 
 
 # In[ ]:
@@ -59,14 +59,16 @@ def potential(element_symbol,functional):
 
 
 def optimize_molecule(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,simulation_time,
-                      CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat):
-    molecule.save('mol_unopt_coord.xyz',overwrite='True')
-    with open('mol_unopt_coord.xyz', 'r') as fin:
+                      CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat,opt_inp_file,mol_unopt_coord):
+    molecule_in_A=mb.clone(molecule)
+    molecule_in_A.save(mol_unopt_coord,overwrite='True')
+    name=molecule.name
+    with open(mol_unopt_coord, 'r') as fin:
         data = fin.read().splitlines(True)
-    with open('mol_unopt_coord.xyz', 'w') as fout:
+    with open(mol_unopt_coord, 'w') as fout:
         fout.writelines(data[2:])
     molecule=molecule.to_parmed()
-    atom_list,mass_list,total_mass=info_molecule(molecule)
+    atom_list,mass_list=info_molecule(molecule)
     unique_atom_list=remove_duplicate(atom_list)
     unique_atom_list.sort()
     num_atoms=len(atom_list)
@@ -75,8 +77,7 @@ def optimize_molecule(molecule,functional,project_name,dire,temperature,box_leng
     mySim = sim.SIM()
     #setting defaults
     
-    if basis_set[0]==None:
-        basis_set=basis_set*num_unique_atoms
+    
     if thermostat==None:
         
         thermostat='NOSE';
@@ -88,21 +89,22 @@ def optimize_molecule(molecule,functional,project_name,dire,temperature,box_leng
         ensemble='NVT'
     
     mySim.GLOBAL.RUN_TYPE = "GEO_OPT"
-    mySim.GLOBAL.PROJECT  = "molecule_opt"
+    mySim.GLOBAL.PROJECT  = name+"_opt"
     mySim.GLOBAL.PRINT_LEVEL = "LOW"
     #FORCE EVAL SECTION
     mySim.FORCE_EVAL.METHOD='QUICKSTEP'
     mySim.FORCE_EVAL.SUBSYS.CELL.ABC='{L} {L} {L}'.format(L=2*10*box_length)
-    mySim.FORCE_EVAL.SUBSYS.COORD.DEFAULT_KEYWORD='mol_unopt_coord.xyz'
+    mySim.FORCE_EVAL.SUBSYS.COORD.DEFAULT_KEYWORD=mol_unopt_coord
     mySim.FORCE_EVAL.SUBSYS.init_atoms(num_atoms);
+    
     for i in range(num_unique_atoms):
         mySim.FORCE_EVAL.SUBSYS.KIND[i+1].SECTION_PARAMETERS=unique_atom_list[i]
         
-        if basis_set[i]==None:
+        if basis_set==[None]:
             
             mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set_setter(unique_atom_list[i])
         else:
-            mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set[i]
+            mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set[unique_atom_list[i]]
         mySim.FORCE_EVAL.SUBSYS.KIND[i+1].POTENTIAL=potential(unique_atom_list[i],functional)
 
     mySim.FORCE_EVAL.DFT.BASIS_SET_FILE_NAME=dire+'BASIS_MOLOPT'
@@ -121,7 +123,7 @@ def optimize_molecule(molecule,functional,project_name,dire,temperature,box_leng
     mySim.FORCE_EVAL.DFT.XC.VDW_POTENTIAL.PAIR_POTENTIAL.R_CUTOFF=11
 
     mySim.FORCE_EVAL.DFT.SCF.SCF_GUESS='ATOMIC'
-    mySim.FORCE_EVAL.DFT.SCF.MAX_SCF=200
+    mySim.FORCE_EVAL.DFT.SCF.MAX_SCF=20
     mySim.FORCE_EVAL.DFT.SCF.EPS_SCF=SCF_tolerence
 
     mySim.MOTION.GEO_OPT.TYPE='MINIMIZATION'
@@ -132,26 +134,33 @@ def optimize_molecule(molecule,functional,project_name,dire,temperature,box_leng
     mySim.MOTION.CONSTRAINT.FIXED_ATOMS.LIST ='1'
     mySim.write_changeLog(fn="mol_opt-changeLog.out")
     mySim.write_errorLog()
-    mySim.write_inputFile(fn='mol_opt.inp')
+    mySim.write_inputFile(fn=opt_inp_file)
 
 
 # In[7]:
 
 
 def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,simulation_time,
-                      CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat,table):
-    current_molecule=mb.clone(molecule)
-    molecule_pmd=mb.clone(current_molecule);
-    molecule_pmd=molecule_pmd.to_parmed()
-    atom_list,mass_list,total_mass=info_molecule(molecule_pmd)
+                      CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat):
+    
+    atom_list=[];
+    mass_list=[];
+    for i in range(len(molecule)):
+        current_molecule=mb.clone(molecule[i])
+        current_molecule_pmd=current_molecule.to_parmed()    
+        x,y=info_molecule(current_molecule_pmd);
+        atom_list.extend(x)
+        mass_list.extend(y)
+    
+    
     unique_atom_list=remove_duplicate(atom_list)
     num_atoms=len(atom_list)
     num_unique_atoms=len(unique_atom_list)
     unique_atom_list.sort()
     box = mb.Box(lengths=[box_length,box_length,box_length])
-    current_molecule.xyz=table;
-    print(number_of_molecules)
-    box_of_molecule= mb.fill_box(compound=current_molecule, n_compounds=number_of_molecules, box=box)
+    
+    box_of_molecule= mb.fill_box(compound=molecule, n_compounds=number_of_molecules, box=box)
+    box_of_molecule.xyz=box_of_molecule.xyz
     filename=project_name+".xyz"
     box_of_molecule.save(filename,overwrite=True)
     with open(project_name+".xyz", 'r') as fin:
@@ -159,8 +168,7 @@ def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,numb
     with open(project_name+".xyz", 'w') as fout:
         fout.writelines(data[2:])
         
-    if basis_set[0]==None:
-        basis_set=basis_set*num_unique_atoms
+    
     if thermostat==None:
         
         thermostat='NOSE';
@@ -221,11 +229,11 @@ def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,numb
     
     for i in range(num_unique_atoms):
         mySim.FORCE_EVAL.SUBSYS.KIND[i+1].SECTION_PARAMETERS=unique_atom_list[i]
-        if basis_set[i]==None:
+        if basis_set==[None]:
             
             mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set_setter(unique_atom_list[i])
         else:
-            mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set[i]
+            mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set[unique_atom_list[i]]
         mySim.FORCE_EVAL.SUBSYS.KIND[i+1].POTENTIAL=potential(unique_atom_list[i],functional)
     mySim.FORCE_EVAL.SUBSYS.CELL.ABC='{L} {L} {L}'.format(L=10*box_length)
 
@@ -276,18 +284,32 @@ def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,numb
 def run_md_main(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
                 simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat):
     
-    current_molecule=mb.clone(molecule)
-    current_molecule=current_molecule.to_parmed()
-    atom_list,mass_list,total_mass=info_molecule(current_molecule)
+    
+    atom_list=[];
+    mass_list=[];
+    num_atom_per_molecule_list=[];
+    for i in range(len(molecule)):
+        current_molecule=mb.clone(molecule[i])
+        current_molecule_pmd=current_molecule.to_parmed()    
+        x,y=info_molecule(current_molecule_pmd);
+        num_atom_per_molecule_list.append(len(x))
+        atom_list.extend(x)
+        mass_list.extend(y)
+    
+    
     unique_atom_list=remove_duplicate(atom_list)
     num_atoms=len(atom_list)
     num_unique_atoms=len(unique_atom_list)
-    total_atoms=num_atoms*number_of_molecules;
+    unique_atom_list.sort()
+    
+    
+    
+    total_atoms=sum([a*b for a,b in zip(num_atom_per_molecule_list,number_of_molecules)])
+    
     string="tail -{} {}-pos-1.xyz > {}.xyz".format(total_atoms,project_name+"pre",project_name)
     subprocess.call(string,shell=True)
     
-    if basis_set[0]==None:
-        basis_set=basis_set*num_unique_atoms
+    
     if thermostat==None:
         
         thermostat='NOSE';
@@ -358,11 +380,11 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
     
     for i in range(num_unique_atoms):
         mySim.FORCE_EVAL.SUBSYS.KIND[i+1].SECTION_PARAMETERS=unique_atom_list[i]
-        if basis_set[i]==None:
+        if basis_set==[None]:
             
             mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set_setter(unique_atom_list[i])
         else:
-            mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set[i]
+            mySim.FORCE_EVAL.SUBSYS.KIND[i+1].BASIS_SET=basis_set[unique_atom_list[i]]
         mySim.FORCE_EVAL.SUBSYS.KIND[i+1].POTENTIAL=potential(unique_atom_list[i],functional)
     mySim.FORCE_EVAL.SUBSYS.CELL.ABC='{L} {L} {L}'.format(L=10*box_length)
 
@@ -406,7 +428,6 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
     mySim.write_inputFile(fn='md-main.inp')
 
 
-# In[ ]:
 
 
 
