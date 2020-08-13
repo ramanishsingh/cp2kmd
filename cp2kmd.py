@@ -5,7 +5,7 @@ import mbuild as mb
 class Cp2kmd():
     def __init__(self,molecule=None, functional=None, project_name=None,dire= '/home/siepmann/singh891/cp2k-6.1.0/data/',
                  temperature= None,box_length=None,number_of_molecules=None,simulation_time=None,CUTOFF=None, SCF_tolerence=None,
-                 basis_set=[None], ensemble=None, timestep=None, thermostat=None):
+                 basis_set=[None], ensemble=None, timestep=None, thermostat=None,pressure=None):
         self.molecule=molecule;
         
         #self.molecule.save('molecule.pdb',overwrite='True')
@@ -22,6 +22,7 @@ class Cp2kmd():
         self.ensemble=ensemble;
         self.timestep=timestep;
         self.thermostat=thermostat;
+        self.pressure=pressure;
         
         molecule=[i.to_parmed() for i in molecule]
         self.number_atom_per_molecule=[len(i.atoms) for i in molecule]
@@ -34,6 +35,7 @@ class Cp2kmd():
         project_name=self.project_name;
         dire=self.dire;
         temperature=self.temperature;
+        pressure=self.pressure;
         number_of_molecules=self.number_of_molecules;
         box_length=self.box_length;
         number_of_molecules=self.number_of_molecules;
@@ -42,9 +44,14 @@ class Cp2kmd():
         SCF_tolerence=self.SCF_tolerence
         basis_set=self.basis_set
         ensemble=self.ensemble
+        
         timestep=self.timestep
         thermostat=self.thermostat
-        temperature=(temperature.to('K')).value
+        if temperature is not None:
+            
+            temperature=(temperature.to('K')).value
+        if pressure is not None:
+            pressure=(pressure.to('bar')).value
         box_length=(box_length.to('nm')).value
         simulation_time=(simulation_time.to('ps')).value
         timestep=(timestep.to('fs')).value
@@ -71,6 +78,8 @@ class Cp2kmd():
         project_name=self.project_name;
         dire=self.dire;
         temperature=self.temperature;
+        pressure=self.pressure;
+        
         number_of_molecules=self.number_of_molecules;
         box_length=self.box_length;
         simulation_time=self.simulation_time
@@ -81,11 +90,16 @@ class Cp2kmd():
         timestep=self.timestep
         thermostat=self.thermostat
         number_atom_per_molecule=self.number_atom_per_molecule
-        temperature=(temperature.to('K')).value
+        if temperature is not None:
+            
+            temperature=(temperature.to('K')).value
+        if pressure is not None:
+            pressure=(pressure.to('bar')).value
+            
         box_length=(box_length.to('nm')).value
         simulation_time=(simulation_time.to('ps')).value
         timestep=(timestep.to('fs')).value
-        novice_functions.run_md_pre(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
+        novice_functions.run_md_pre(molecule,functional,project_name,dire,temperature,pressure, box_length,number_of_molecules,
                                     simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat)
     def run_main_files(self):
         molecule=self.molecule;
@@ -96,7 +110,7 @@ class Cp2kmd():
         
         temperature=self.temperature;
         box_length=self.box_length;
-        
+        pressure=self.pressure;
         number_of_molecules=self.number_of_molecules;
         
         simulation_time=self.simulation_time;
@@ -107,12 +121,16 @@ class Cp2kmd():
         ensemble=self.ensemble
         timestep=self.timestep
         thermostat=self.thermostat
-        temperature=(temperature.to('K')).value
+        if temperature is not None:
+            
+            temperature=(temperature.to('K')).value
+        if pressure is not None:
+            pressure=(pressure.to('bar')).value
         box_length=(box_length.to('nm')).value
         simulation_time=(simulation_time.to('ps')).value
         timestep=(timestep.to('fs')).value
         
-        novice_functions.run_md_main(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
+        novice_functions.run_md_main(molecule,functional,project_name,dire,temperature,pressure,box_length,number_of_molecules,
                                     simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat)
         
 

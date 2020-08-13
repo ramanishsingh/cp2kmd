@@ -89,7 +89,7 @@ def optimize_molecule(molecule,functional,project_name,dire,temperature,box_leng
         ensemble='NVT'
     
     mySim.GLOBAL.RUN_TYPE = "GEO_OPT"
-    mySim.GLOBAL.PROJECT  = name+"_opt"
+    mySim.GLOBAL.PROJECT_NAME  = name+"_opt"
     mySim.GLOBAL.PRINT_LEVEL = "LOW"
     #FORCE EVAL SECTION
     mySim.FORCE_EVAL.METHOD='QUICKSTEP'
@@ -140,7 +140,7 @@ def optimize_molecule(molecule,functional,project_name,dire,temperature,box_leng
 # In[7]:
 
 
-def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,simulation_time,
+def run_md_pre(molecule,functional,project_name,dire,temperature,pressure,box_length,number_of_molecules,simulation_time,
                       CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat):
     
     atom_list=[];
@@ -183,7 +183,7 @@ def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,numb
     mySim = sim.SIM()
 
     mySim.GLOBAL.RUN_TYPE = "MD"
-    mySim.GLOBAL.PROJECT  = project_name+"pre"
+    mySim.GLOBAL.PROJECT_NAME  = project_name+"pre"
     mySim.GLOBAL.PRINT_LEVEL = "LOW"
 
 
@@ -255,7 +255,7 @@ def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,numb
     mySim.MOTION.MD.THERMOSTAT.NOSE.TIMECON = 1000.0
     mySim.MOTION.MD.THERMOSTAT.NOSE.MTS = 2
 
-
+    mySim.MOTION.MD.BAROSTAT.PRESSURE = pressure
     #mySim.MOTION.MD.PRINT.ENERGY.EACH.MD = 20
     #mySim.MOTION.MD.PRINT.PROGRAM_RUN_INFO.EACH.MD = 20
     #mySim.MOTION.MD.AVERAGES.SECTION_PARAMETERS= ".falbmbjse."
@@ -281,7 +281,7 @@ def run_md_pre(molecule,functional,project_name,dire,temperature,box_length,numb
 # In[8]:
 
 
-def run_md_main(molecule,functional,project_name,dire,temperature,box_length,number_of_molecules,
+def run_md_main(molecule,functional,project_name,dire,temperature,pressure, box_length,number_of_molecules,
                 simulation_time,CUTOFF,SCF_tolerence,basis_set, ensemble, timestep, thermostat):
     
     
@@ -335,7 +335,7 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
     mySim = sim.SIM()
 
     mySim.GLOBAL.RUN_TYPE = "MD"
-    mySim.GLOBAL.PROJECT  = project_name
+    mySim.GLOBAL.PROJECT_NAME  = project_name
     mySim.GLOBAL.PRINT_LEVEL = "LOW"
 
 
@@ -405,7 +405,7 @@ def run_md_main(molecule,functional,project_name,dire,temperature,box_length,num
     mySim.MOTION.MD.THERMOSTAT.NOSE.TIMECON = 1000.0
     mySim.MOTION.MD.THERMOSTAT.NOSE.MTS = 2
 
-
+    mySim.MOTION.MD.BAROSTAT.PRESSURE = pressure
     #mySim.MOTION.MD.PRINT.ENERGY.EACH.MD = 20
     #mySim.MOTION.MD.PRINT.PROGRAM_RUN_INFO.EACH.MD = 20
     #mySim.MOTION.MD.AVERAGES.SECTION_PARAMETERS= ".falbmbjse."

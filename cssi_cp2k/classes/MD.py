@@ -3,6 +3,7 @@ import cssi_cp2k.utilities as utilities
 from cssi_cp2k.classes import THERMOSTAT as thermostat
 from cssi_cp2k.classes import MD_PRINT as md_print
 from cssi_cp2k.classes import AVERAGES as averages
+from cssi_cp2k.classes import BAROSTAT as barostat
 
 MD_ENSEMBLE_VALS = ["HYDROSTATICSHOCK","ISOKIN","LANGEVIN","MSST","MSST_DAMPED","NPE_F","NPE_I",
                     "NPT_F","NPT_I","NVE","NVT","NVT_ADIABATIC","REFTRAJ"]
@@ -60,6 +61,8 @@ class MD:
     #MD subesctions
     self.__THERMOSTAT  = thermostat.THERMOSTAT(errorLog=self.__errorLog,changeLog=self.__changeLog,
                            location=self.__location)
+    self.__BAROSTAT  = barostat.BAROSTAT(errorLog=self.__errorLog,changeLog=self.__changeLog,
+                           location=self.__location)
     self.__PRINT       = md_print.PRINT(errorLog=self.__errorLog,changeLog=self.__changeLog,
                            location=self.__location)
     self.__AVERAGES = averages.AVERAGES(errorLog=self.__errorLog, changeLog=self.__changeLog,
@@ -96,6 +99,9 @@ class MD:
   @property
   def THERMOSTAT(self):
     return self.__THERMOSTAT
+  @property
+  def BAROSTAT(self):
+    return self.__BAROSTAT
 
   @property
   def AVERAGES(self):

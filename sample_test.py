@@ -3,7 +3,7 @@
 
 # # CP2K MD workflow
 
-# In[ ]:
+# In[1]:
 
 
 # Deleting files that we do not need, files generated from a previous run
@@ -20,26 +20,16 @@ for name in extension_list:
 
 # ### Loading modules
 
-# In[1]:
+# In[2]:
 
 
 
 import mbuild as mb 
 
-import signac
-import flow
-from shutil import copyfile
-
 import numpy as np
 from cp2kmd import Cp2kmd
 import runners
 import unyt as u
-
-
-# In[ ]:
-
-
-
 
 
 # ### Defining the molecule
@@ -60,42 +50,47 @@ class FCl(mb.Compound): # this class builds a chlorine molecule with a bond-leng
     def __init__(self):
         super(FCl, self).__init__()
         
-        chlorine1= mb.Particle(pos=[0.0, 0.0, 0.0], name='F')
+        fluorine1= mb.Particle(pos=[0.0, 0.0, 0.0], name='F')
         chlorine2= mb.Particle(pos=[0.2, 0.0, 0.0], name='Cl')
-        self.add([chlorine2,chlorine1])
-        self.add_bond((chlorine2,chlorine1))
+        self.add([fluorine1,chlorine2])
+        self.add_bond((fluorine1,chlorine2))
 
 
 # In[4]:
 
 
-
 md=Cp2kmd(molecule=[Cl2(),FCl()])
-
-
-# In[5]:
-
-
-dir(md)
 
 
 # ### Forcefield and ensemble
 
-# In[6]:
+# In[5]:
 
 
 
 md.basis_set={'F':'DZVP-MOLOPT-SR-GTH','Cl':'DZVP-MOLOPT-SR-GTH'}
-md.box_length=1.1*u.nm;
-md.dire='/home/siepmann/singh891/cp2k-6.1.0/data/'
-md.ensemble='NVT'
-md.number_of_molecules=[10,10]
-md.temperature=273.15*u.K
-md.simulation_time=0.010*u.ps #ps
-md.CUTOFF=400
 md.functional='PBE'
+md.dire='/home/siepmann/singh891/cp2k-6.1.0/data/'
+md.CUTOFF=400
+
+md.ensemble='NPT_I'
+md.number_of_molecules=[10,10]
+md.box_length=1.1*u.nm;
+md.temperature=273.15*u.K
+md.pressure=1*u.bar
+
+md.simulation_time=0.02*u.ps #ps
+
 md.project_name='chlorine'
 md.timestep=1*u.fs;
+
+
+# ### Generating opt input file
+
+# In[6]:
+
+
+md.optimize_files()
 
 
 # In[ ]:
@@ -104,17 +99,9 @@ md.timestep=1*u.fs;
 
 
 
-# ### Generating opt input file
-
-# In[7]:
-
-
-md.optimize_files()
-
-
 # ### Running molecule optimization
 
-# In[9]:
+# In[7]:
 
 
 
@@ -124,7 +111,7 @@ print('opt completed')
 
 # ### Generating pre run files
 
-# In[11]:
+# In[ ]:
 
 
 md.run_pre_files()
@@ -132,7 +119,7 @@ md.run_pre_files()
 
 # ### pre run
 
-# In[12]:
+# In[ ]:
 
 
 
@@ -141,7 +128,7 @@ runners.run_md_pre(md)
 
 # ### Generating main run files
 
-# In[15]:
+# In[ ]:
 
 
 md.run_main_files()
@@ -149,14 +136,10 @@ md.run_main_files()
 
 # ### Running main MD
 
-# In[16]:
+# In[ ]:
 
 
 runners.run_md_main(md)
 
 
-# In[ ]:
-
-
-
-
+# #### chlorine-1.ener and chlorine-pos-1.xyz (energy and trajectory files generated)

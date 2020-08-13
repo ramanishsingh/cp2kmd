@@ -8,7 +8,7 @@ def write_input(SimObject):
   glob = SimObject.GLOBAL
   inputFile += "&GLOBAL\n"
   inputFile += "  RUN_TYPE     {}\n".format(glob.RUN_TYPE)
-  inputFile += "  PROJECT      {}\n".format(glob.PROJECT)
+  inputFile += "  PROJECT      {}\n".format(glob.PROJECT_NAME)
   if glob.PRINT_LEVEL is not None:
    inputFile += "  PRINT_LEVEL  {}\n".format(glob.PRINT_LEVEL)
 
@@ -59,6 +59,36 @@ def write_input(SimObject):
     inputFile += "      &END {}             \n".format(mot.MD.THERMOSTAT.TYPE )
   inputFile += "    &END THERMOSTAT       \n"
   
+  
+#BAROSTAT SUBSECTION
+
+  if mot.MD.ENSEMBLE is not None:
+    if 1:
+          
+      inputFile += "    &BAROSTAT       \n"
+      if mot.MD.BAROSTAT.PRESSURE is not None:
+
+        inputFile += "      PRESSURE            {} \n".format(mot.MD.BAROSTAT.PRESSURE)
+      if mot.MD.BAROSTAT.TEMPERATURE is not None:
+
+        inputFile += "      TEMPERATURE            {} \n".format(mot.MD.BAROSTAT.TEMPERATURE)
+      if mot.MD.BAROSTAT.TEMP_TOL is not None:
+
+        inputFile += "      TEMP_TOL            {} \n".format(mot.MD.BAROSTAT.TEMP_TOL)
+      if mot.MD.BAROSTAT.TIMECON is not None:
+
+        inputFile += "      TIMECON            {} \n".format(mot.MD.BAROSTAT.TIMECON)
+      if mot.MD.BAROSTAT.VIRIAL is not None:
+
+        inputFile += "      VIRIAL            {} \n".format(mot.MD.BAROSTAT.VIRIAL)
+
+
+
+
+      inputFile += "    &END BAROSTAT       \n"
+
+        
+
       #AVERAGES subsection
   inputFile += "    &AVERAGES       \n"
   if mot.MD.AVERAGES.SECTION_PARAMETERS is not None:
