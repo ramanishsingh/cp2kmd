@@ -11,7 +11,6 @@ cp2kmd workflow executes the MD simulations in three steps
 
 
 
-
 The Cp2kmd class
 -----------------
 An instance of the Cp2kmd class contains the following objects:
@@ -37,7 +36,7 @@ Input file writer
 ------------------
 
 The input files are written using the cssi_cp2k module. It can be found in the cp2kmd/writer directory.
-The SIM class contains the sections of the CP2K input file as objects. There are individual classes for all subsections and varibales can be changed by accessing the object in that class.
+The SIM class contains the sections of the CP2K input file as objects. There are individual classes for all subsections and variables can be changed by accessing the object in that class.
 For example, if the RUN_TYPE has to be set to MD, it can be changed as : SIM().GLOBAL.RUN_TYPE=MD.
 
 The input file writer (cssi_cp2k) is used in cp2kmd/novice_functions to generate the optimization, pre-md, and main-md input files (.inp).
