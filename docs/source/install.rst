@@ -5,7 +5,7 @@ Conda installation is recommended. The package can be downloaded from `here <htt
 
 Conda environment
 -----------------
-cp2kmd has been built and tested on python 3.6
+cp2kmd has been built and tested on python 3.6.
 You can use the following commands to create a virtual conda environment with all the cp2kmd dependencies.
 
 

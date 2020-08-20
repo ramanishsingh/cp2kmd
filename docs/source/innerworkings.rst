@@ -1,5 +1,10 @@
 Inner workings
 ===============
+cp2kmd requires the input molecules to be defined as an mBuild molecule. The conditions of the simulation also need to be defined (See Cp2kmd class below).
+After the structure(s) of the molecule(s) is defined, an instance of Cp2kmd class shall be generated and all the information about the simulation can be specified in it (see examples).
+
+cp2kmd workflow
+
 
 
 The Cp2kmd class
@@ -28,6 +33,9 @@ Input file writer
 
 The input files are written using the cssi_cp2k module. It can be found in the cp2kmd/writer directory.
 The SIM class contains the sections of the CP2K input file as objects. There are individual classes for all subsections and varibales can be changed by accessing the object in that class.
-For example, if the RUN_TYPE has to be set to MD, it can be changed as : SIM.
+For example, if the RUN_TYPE has to be set to MD, it can be changed as : SIM().GLOBAL.RUN_TYPE=MD.
+
+The input file writer (cssi_cp2k) is used in cp2kmd/novice_functions to generate the optimization, pre-md, and main-md input files (.inp).
+
 
 
