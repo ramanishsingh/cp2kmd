@@ -2,7 +2,6 @@ Inner workings
 ===============
 
 
-
 The Cp2kmd class
 -----------------
 An instance of the Cp2kmd class contains the following objects:
