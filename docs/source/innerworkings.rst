@@ -3,7 +3,9 @@ Inner workings
 cp2kmd requires the input molecules to be defined as an mBuild molecule. The conditions of the simulation also need to be defined (See Cp2kmd class below).
 After the structure(s) of the molecule(s) is defined, an instance of Cp2kmd class shall be generated and all the information about the simulation can be specified in it (see examples).
 
-cp2kmd workflow
+cp2kmd workflow executes the MD simulations in three steps.
+
+#. Optimize the structure of each molecule type.
 
 
 
