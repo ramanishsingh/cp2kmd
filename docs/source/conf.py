@@ -16,7 +16,7 @@
 
 
 # -- Project information -----------------------------------------------------
-
+master_doc = 'index'
 project = 'CP2KMD'
 copyright = '2020, Ramanish Singh'
 author = 'Ramanish Singh'

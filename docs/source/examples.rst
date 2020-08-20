@@ -25,9 +25,12 @@ Examples
 
     import mbuild as mb # mBuild is required for input structure generation
     import numpy as np
-    from cp2kmd import Cp2kmd
-    import runners
+    from cp2kmd import runners
     import unyt as u
+
+    from cp2kmd.cp2kmd import Cp2kmd
+
+
 
     #defining the molecule
     class O2(mb.Compound): # this class builds a chlorine molecule with a bond-length given in the chlorine2 x coor (nm)
@@ -96,9 +99,10 @@ Examples
 
     import mbuild as mb # mBuild is required for input structure generation
     import numpy as np
-    from cp2kmd import Cp2kmd
-    import runners
+    from cp2kmd import runners
     import unyt as u
+
+    from cp2kmd.cp2kmd import Cp2kmd
 
     #defining the molecules
     class O2(mb.Compound): # this class builds a chlorine molecule with a bond-length given in the chlorine2 x coor (nm)
