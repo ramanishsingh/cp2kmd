@@ -1,0 +1,240 @@
+SIM/GLOBAL/RUN_TYPE
+
+New: GEO_OPT
+Previous: None
+Date: 2020-08-20 12:31:32.552125
+Success: True
+ErrorMessage: None
+
+SIM/GLOBAL/PRINT_LEVEL
+
+New: LOW
+Previous: None
+Date: 2020-08-20 12:31:32.552135
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/METHOD
+
+New: QUICKSTEP
+Previous: None
+Date: 2020-08-20 12:31:32.552139
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/DFT/ABC
+
+New: 22.0 22.0 22.0
+Previous: None
+Date: 2020-08-20 12:31:32.552192
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/DFT/DEFAULT_KEYWORD
+
+New: FCl_unopt_coord.xyz
+Previous: None
+Date: 2020-08-20 12:31:32.552201
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/KIND/SECTION_PARAMETERS
+
+New: Cl
+Previous: None
+Date: 2020-08-20 12:31:32.552273
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/KIND/BASIS_SET
+
+New: DZVP-MOLOPT-SR-GTH
+Previous: None
+Date: 2020-08-20 12:31:32.552279
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/KIND/POTENTIAL
+
+New: GTH-PBE
+Previous: None
+Date: 2020-08-20 12:31:32.552284
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/KIND/SECTION_PARAMETERS
+
+New: F
+Previous: None
+Date: 2020-08-20 12:31:32.552287
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/KIND/BASIS_SET
+
+New: DZVP-MOLOPT-SR-GTH
+Previous: None
+Date: 2020-08-20 12:31:32.552290
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/SUBSYS/KIND/POTENTIAL
+
+New: GTH-PBE
+Previous: None
+Date: 2020-08-20 12:31:32.552293
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/ABASIS_SET_FILE_NAME
+
+New: /home/siepmann/singh891/cp2k-6.1.0/data/BASIS_MOLOPT
+Previous: None
+Date: 2020-08-20 12:31:32.552296
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/POTENTIAL_FILE_NAME
+
+New: /home/siepmann/singh891/cp2k-6.1.0/data/GTH_POTENTIALS
+Previous: None
+Date: 2020-08-20 12:31:32.552299
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/ENERGY/EPS_DEFAULT
+
+New: 1e-10
+Previous: None
+Date: 2020-08-20 12:31:32.552303
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/MGRID/CUTOFF
+
+New: 400
+Previous: None
+Date: 2020-08-20 12:31:32.552306
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/MGRID/REL_CUTOFF
+
+New: 50
+Previous: None
+Date: 2020-08-20 12:31:32.552309
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/MGRID/NGRIDS
+
+New: 5
+Previous: None
+Date: 2020-08-20 12:31:32.552313
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/XC/XC_FUNCTIONAL/SECTION_PARAMETERS
+
+New: PBE
+Previous: None
+Date: 2020-08-20 12:31:32.552319
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/XC/VDW_POTENTIAL/POTENTIAL_TYPE
+
+New: PAIR_POTENTIAL
+Previous: None
+Date: 2020-08-20 12:31:32.552323
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/XC/VDW_POTENTIAL/PAIR_POTENTIAL/TYPE
+
+New: DFTD3
+Previous: None
+Date: 2020-08-20 12:31:32.552342
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/XC/VDW_POTENTIAL/PAIR_POTENTIAL/PARAMETER_FILE_NAME
+
+New: dftd3.dat
+Previous: None
+Date: 2020-08-20 12:31:32.552346
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/XC/VDW_POTENTIAL/PAIR_POTENTIAL/REFERENCE_FUNCTIONAL
+
+New: PBE
+Previous: None
+Date: 2020-08-20 12:31:32.552349
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/XC/VDW_POTENTIAL/PAIR_POTENTIAL/R_CUTOFF
+
+New: 11
+Previous: None
+Date: 2020-08-20 12:31:32.552352
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/SCF/SCF_GUESS
+
+New: ATOMIC
+Previous: None
+Date: 2020-08-20 12:31:32.552356
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/DFT/SCF/MAX_SCF
+
+New: 20
+Previous: None
+Date: 2020-08-20 12:31:32.552359
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/GEO_OPT/TYPE
+
+New: MINIMIZATION
+Previous: None
+Date: 2020-08-20 12:31:32.552364
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/GEO_OPT/MAX_DR
+
+New: BFGS
+Previous: None
+Date: 2020-08-20 12:31:32.552368
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/GEO_OPT/MAX_ITER
+
+New: 2
+Previous: None
+Date: 2020-08-20 12:31:32.552371
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/GEO_OPT/MAX_FORCE
+
+New: 0.001
+Previous: None
+Date: 2020-08-20 12:31:32.552380
+Success: True
+ErrorMessage: None
+
+SIM/MOTION/CONSTRAINT/FIXED_ATOMS/LIST
+
+New: 1
+Previous: None
+Date: 2020-08-20 12:31:32.552384
+Success: True
+ErrorMessage: None
+

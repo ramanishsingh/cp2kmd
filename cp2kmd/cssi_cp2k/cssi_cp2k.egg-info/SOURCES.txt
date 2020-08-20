@@ -1,0 +1,6 @@
+README.md
+setup.py
+cssi_cp2k.egg-info/PKG-INFO
+cssi_cp2k.egg-info/SOURCES.txt
+cssi_cp2k.egg-info/dependency_links.txt
+cssi_cp2k.egg-info/top_level.txt
