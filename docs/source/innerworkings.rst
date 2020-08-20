@@ -42,4 +42,5 @@ For example, if the RUN_TYPE has to be set to MD, it can be changed as : SIM().G
 The input file writer (cssi_cp2k) is used in cp2kmd/novice_functions to generate the optimization, pre-md, and main-md input files (.inp).
 
 
-
+Changing the default parameters
+---------------------------------
