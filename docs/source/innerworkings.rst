@@ -46,4 +46,4 @@ Changing the default parameters
 ----------------------------------
 In case the objects other than the objects in the Cp2kmd class need to be changed, they can be changed in the novice_functions.py file.
 Parameters for molecule optimization can be changed in optimize_molecule function.
-Similarly for pre-md run and main-md run change the run_md_pre and run_md_main function respectively.
+Similarly for pre-md run and main-md run, change the run_md_pre and run_md_main function respectively.
